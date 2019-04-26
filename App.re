@@ -99,17 +99,17 @@ let init = app => {
       right(0),
     ];
 
-  let innerStyle = Style.[flexDirection(`Column), alignItems(`FlexEnd)];
+  let innerStyle = Style.[flexDirection(`Column), alignItems(`FlexEnd), justifyContent(`FlexStart)];
 
   let textStyle =
         Style.[
           color(Colors.white),
           fontFamily("Roboto-Regular.ttf"),
-          fontSize(24),
+          fontSize(12),
         ];
 
   let files = switch (getFiles()) {
-    | Ok(filenames) => List.map(file => <Text style=textStyle text=file />, filenames)
+    | Ok(filenames) => List.map(filesystemItem => <Text style=textStyle text={filesystemItem.title ++ (filesystemItem.isDir ? "_Dir" : "_File")} />, filenames)
     | Error(error) => [<Text style=textStyle text="Error" />]
   };
 
