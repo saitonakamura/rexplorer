@@ -3,7 +3,6 @@ open Revery.Math;
 open Revery.UI;
 open Revery.UI.Components;
 open Files;
-open Rresult;
 
 module AnimatedText = {
   let component = React.component("AnimatedText");
@@ -97,27 +96,12 @@ let init = app => {
       top(0),
       left(0),
       right(0),
+      backgroundColor(Colors.white)
     ];
-
-  let innerStyle = Style.[flexDirection(`Column), alignItems(`FlexEnd), justifyContent(`FlexStart)];
-
-  let textStyle =
-        Style.[
-          color(Colors.white),
-          fontFamily("Roboto-Regular.ttf"),
-          fontSize(12),
-        ];
-
-  let files = switch (getFiles()) {
-    | Ok(filenames) => List.map(filesystemItem => <Text style=textStyle text={filesystemItem.title ++ (filesystemItem.isDir ? "_Dir" : "_File")} />, filenames)
-    | Error(error) => [<Text style=textStyle text="Error" />]
-  };
 
   let element =
     <View style=containerStyle>
-      <View style=innerStyle>
-        ...files
-      </View>
+      <FilesView />
     </View>;
 
   let _ = UI.start(win, element);

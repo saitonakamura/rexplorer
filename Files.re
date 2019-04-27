@@ -1,14 +1,12 @@
 open Bos_setup;
 
 type filesystemItem = {
+  fpath: Fpath.t,
   title: string,
   isDir: bool,
 }
 
-let path = Fpath.of_string("C:/");
-
-let getFiles = () => path
-  >>= fpath => OS.Dir.contents(fpath, ~dotfiles=true, ~rel=false)
+let getFiles = (fpath) => OS.Dir.contents(fpath, ~dotfiles=true, ~rel=false)
   >>| fpaths => List.map(fpath => (fpath, OS.Path.stat(fpath)), fpaths)
   |> List.filter(((_, statResult)) => Rresult.R.is_ok(statResult))
   |> List.map(((fpath, statResult)) => {
@@ -17,9 +15,8 @@ let getFiles = () => path
       | Unix.S_DIR => true
       | _ => false
     };
-    { title: Fpath.filename(fpath), isDir };
+    { title: Fpath.filename(fpath), isDir, fpath };
   })
   /*
   >>| fpaths => List.map(fpath => ({ title: String.concat(~sep="/", Fpath.segs(fpath)), isDir: Fpath.is_dir_path(fpath) }), fpaths);
   */
-
