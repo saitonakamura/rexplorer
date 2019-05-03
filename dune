@@ -2,9 +2,11 @@
     (name App)
     (package App)
     (public_name App)
+    (c_names cHelpers)
     (libraries
         bigarray
         reglfw
         Revery
         bos.setup
-            ))
+    )
+)

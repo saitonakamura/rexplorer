@@ -29,34 +29,34 @@ let createElement = (~children as _, ()) =>
         hooks
       );
 
-  let goto = fpath => dispatch(GoTo(fpath))
+    let goto = fpath => dispatch(GoTo(fpath))
 
-  let innerStyle = Style.[flexDirection(`Column), alignItems(`FlexEnd), justifyContent(`FlexStart)];
+    let innerStyle = Style.[flexDirection(`Column), alignItems(`FlexEnd), justifyContent(`FlexStart)];
 
-  let textStyle =
-        Style.[
-          color(Colors.black),
-          fontFamily("Roboto-Regular.ttf"),
-          fontSize(14),
-        ];
+    let textStyle =
+          Style.[
+            color(Colors.black),
+            fontFamily("Roboto-Regular.ttf"),
+            fontSize(14),
+          ];
 
-  let files = switch (getFiles(state.currentFpath)) {
-    | Ok(filenames) => List.map(
-      filesystemItem => {
-        if (filesystemItem.isDir) {
-          <Clickable onClick={() => goto(filesystemItem.fpath)}>
-            <Text style=textStyle text={filesystemItem.title ++ "_Dir"} />
-          </Clickable>
-        } else {
-          <Text style=textStyle text={filesystemItem.title ++ "_File"} />
-        }
-      },
-      filenames)
-    | Error(error) => [<Text style=textStyle text="Error" />]
-  };
+    let files = switch (getFiles(state.currentFpath)) {
+      | Ok(filenames) => List.map(
+        filesystemItem => {
+          if (filesystemItem.isDir) {
+            <Clickable onClick={() => goto(filesystemItem.fpath)}>
+              <Text style=textStyle text={filesystemItem.title ++ "_Dir"} />
+            </Clickable>
+          } else {
+            <Text style=textStyle text={filesystemItem.title ++ "_File"} />
+          }
+        },
+        filenames)
+      | Error(error) => [<Text style=textStyle text="Error" />]
+    };
 
-  let back = <Clickable onClick={() => goto(Fpath.parent(state.currentFpath))}><Text style=textStyle text=".." /></Clickable>;
-  let filesWithBack = [back, ...files];
+    let back = <Clickable onClick={() => goto(Fpath.parent(state.currentFpath))}><Text style=textStyle text=".." /></Clickable>;
+    let filesWithBack = [back, ...files];
 
-  (hooks, <View style=innerStyle>...filesWithBack</View>);
+    (hooks, <View style=innerStyle>...filesWithBack</View>);
   });
